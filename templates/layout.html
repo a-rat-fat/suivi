@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HSE Pilot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <header class="sticky top-0 z-10 bg-gray-900/80 backdrop-blur border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="{{ url_for('index') }}" class="text-xl font-semibold">HSE Pilot</a>
+      <nav class="flex gap-4 text-sm">
+        <a class="hover:text-white/90" href="{{ url_for('actions_list') }}">Actions</a>
+        <a class="hover:text-white/90" href="{{ url_for('risks_list') }}">Risques</a>
+        <a class="hover:text-white/90" href="{{ url_for('audits_list') }}">Audits</a>
+        <a class="hover:text-white/90" href="{{ url_for('incidents_list') }}">Incidents</a>
+        <a class="hover:text-white/90" href="{{ url_for('training_list') }}">Formations</a>
+        <a class="hover:text-white/90" href="{{ url_for('sds_list') }}">FDS</a>
+        <a class="hover:text-white/90" href="{{ url_for('waste_list') }}">Déchets</a>
+        <a class="hover:text-white/90" href="{{ url_for('equipment_list') }}">GMAO</a>
+        <a class="hover:text-white/90" href="{{ url_for('team_list') }}">Équipe</a>
+        <a class="hover:text-white/90" href="{{ url_for('absences_list') }}">Absences</a>
+      </nav>
+      <form method="post" action="{{ url_for('set_initials') }}" class="flex items-center gap-2">
+        <input name="initials" value="{{ initials or '' }}" placeholder="Initiales"
+               class="px-2 py-1 bg-gray-800 border border-gray-700 rounded text-sm w-24" />
+        <button class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 rounded text-sm">OK</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2 mb-4">
+          {% for category, message in messages %}
+            <div class="px-3 py-2 rounded border text-sm
+                        {% if category == 'success' %}bg-emerald-900/30 border-emerald-700 text-emerald-200{% else %}
+                        bg-rose-900/30 border-rose-700 text-rose-200{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-gray-800 text-xs text-gray-400 py-4">
+    <div class="max-w-6xl mx-auto px-4">
+      © {{ 2025 }} HSE Pilot · Thème sombre classique · Railway ready
+    </div>
+  </footer>
+</body>
+</html>

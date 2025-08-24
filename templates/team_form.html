@@ -1,0 +1,17 @@
+{% extends "layout.html" %}{% block content %}
+<h1 class="text-2xl font-semibold mb-4">{{ 'Modifier' if item else 'Ajouter' }} un membre</h1>
+<form method="post" class="grid md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800">
+  <input name="name" placeholder="Nom" value="{{ item.name if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="role" placeholder="Rôle" value="{{ item.role if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="date" name="hire_date" value="{{ item.hire_date if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <select name="status" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['Actif','Inactif'] %}
+    <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <div class="md:col-span-2">
+    <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded">Enregistrer</button>
+    <a class="ml-3 text-gray-400 hover:text-gray-200" href="{{ url_for('team_list') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}

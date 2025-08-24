@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Tableau de bord</h1>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">Actions ouvertes</div>
+    <div class="text-3xl font-bold">{{ counts.actions_open }}</div>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">Risques</div>
+    <div class="text-3xl font-bold">{{ counts.risks }}</div>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">Audits</div>
+    <div class="text-3xl font-bold">{{ counts.audits }}</div>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">Incidents ouverts</div>
+    <div class="text-3xl font-bold">{{ counts.incidents_open }}</div>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">Équipements à contrôler</div>
+    <div class="text-3xl font-bold">{{ counts.equip_due }}</div>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <div class="text-sm text-gray-400">FDS à revoir</div>
+    <div class="text-3xl font-bold">{{ counts.sds_due }}</div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <h2 class="font-semibold mb-2">Actions par statut</h2>
+    <canvas id="chartActions"></canvas>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <h2 class="font-semibold mb-2">Déchets par flux (kg)</h2>
+    <canvas id="chartWaste"></canvas>
+  </div>
+  <div class="p-4 rounded-xl bg-gray-900 border border-gray-800">
+    <h2 class="font-semibold mb-2">Incidents par sévérité</h2>
+    <canvas id="chartIncidents"></canvas>
+  </div>
+</div>
+
+<script>
+  function renderChart(id, labels, values) {
+    new Chart(document.getElementById(id).getContext('2d'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '', data: values }]},
+      options: { scales: { y: { beginAtZero: true } } }
+    });
+  }
+  renderChart('chartActions', {{ charts.actions_by_status|map(attribute='label')|list|tojson }}, {{ charts.actions_by_status|map(attribute='value')|list|tojson }});
+  renderChart('chartWaste', {{ charts.waste_by_stream|map(attribute='label')|list|tojson }}, {{ charts.waste_by_stream|map(attribute='value')|list|tojson }});
+  renderChart('chartIncidents', {{ charts.incidents_by_severity|map(attribute='label')|list|tojson }}, {{ charts.incidents_by_severity|map(attribute='value')|list|tojson }});
+</script>
+{% endblock %}

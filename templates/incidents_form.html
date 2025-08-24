@@ -1,0 +1,24 @@
+{% extends "layout.html" %}{% block content %}
+<h1 class="text-2xl font-semibold mb-4">{{ 'Modifier' if item else 'Déclarer' }} un incident</h1>
+<form method="post" class="grid md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800">
+  <input type="date" name="date" value="{{ item.date if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="location" placeholder="Lieu" value="{{ item.location if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <select name="severity" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['Mineur','Majeur','Critique'] %}
+    <option value="{{s}}" {% if item and item.severity==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <select name="status" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['Ouvert','En traitement','Clôturé'] %}
+    <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <textarea name="description" placeholder="Description" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded md:col-span-2" rows="4">{{ item.description if item else '' }}</textarea>
+  <textarea name="root_cause" placeholder="Analyse des causes" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded md:col-span-2" rows="3">{{ item.root_cause if item else '' }}</textarea>
+  <textarea name="corrective_action" placeholder="Action corrective" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded md:col-span-2" rows="3">{{ item.corrective_action if item else '' }}</textarea>
+  <div class="md:col-span-2">
+    <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded">Enregistrer</button>
+    <a class="ml-3 text-gray-400 hover:text-gray-200" href="{{ url_for('incidents_list') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}

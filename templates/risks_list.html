@@ -1,0 +1,32 @@
+{% extends "layout.html" %}{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-semibold">Analyse des risques</h1>
+  <a class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded" href="{{ url_for('risks_new') }}">Nouveau risque</a>
+</div>
+<div class="overflow-x-auto rounded-xl border border-gray-800">
+<table class="min-w-full text-sm">
+  <thead class="bg-gray-900 text-gray-300"><tr>
+    <th class="p-2 text-left">Processus</th><th class="p-2 text-left">Danger</th>
+    <th class="p-2">Gravité</th><th class="p-2">Prob.</th><th class="p-2">Niveau</th>
+    <th class="p-2">Statut</th><th class="p-2"></th></tr></thead>
+  <tbody>
+  {% for it in items %}
+  <tr class="border-t border-gray-800 hover:bg-gray-900">
+    <td class="p-2">{{ it.process }}</td>
+    <td class="p-2">{{ it.hazard }}</td>
+    <td class="p-2">{{ it.severity }}</td>
+    <td class="p-2">{{ it.probability }}</td>
+    <td class="p-2 font-semibold">{{ it.risk_level }}</td>
+    <td class="p-2">{{ it.status }}</td>
+    <td class="p-2 text-right">
+      <a class="text-indigo-400 hover:underline mr-3" href="{{ url_for('risks_edit', item_id=it.id) }}">Modifier</a>
+      <form action="{{ url_for('risks_delete', item_id=it.id) }}" method="post" class="inline" onsubmit="return confirm('Supprimer ?')">
+        <button class="text-rose-400 hover:underline">Supprimer</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

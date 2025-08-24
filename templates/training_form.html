@@ -1,0 +1,22 @@
+{% extends "layout.html" %}{% block content %}
+<h1 class="text-2xl font-semibold mb-4">{{ 'Modifier' if item else 'Créer' }} une formation</h1>
+<form method="post" class="grid md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800">
+  <input name="employee" placeholder="Salarié" value="{{ item.employee if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="topic" placeholder="Sujet" value="{{ item.topic if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <label class="inline-flex items-center gap-2 text-sm">
+    <input type="checkbox" name="required" {% if not item or item.required %}checked{% endif %}/>
+    Exigée
+  </label>
+  <input type="date" name="due_date" value="{{ item.due_date if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="date" name="completed_date" value="{{ item.completed_date if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <select name="status" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['À planifier','Planifiée','Réalisée','En retard'] %}
+    <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <div class="md:col-span-2">
+    <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded">Enregistrer</button>
+    <a class="ml-3 text-gray-400 hover:text-gray-200" href="{{ url_for('training_list') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}{% block content %}
+<h1 class="text-2xl font-semibold mb-4">{{ 'Modifier' if item else 'Créer' }} un risque</h1>
+<form method="post" class="grid md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800">
+  <input name="process" placeholder="Processus" value="{{ item.process if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded" required/>
+  <input name="hazard" placeholder="Danger" value="{{ item.hazard if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded" required/>
+  <input type="number" min="1" max="5" name="severity" value="{{ item.severity if item else 1 }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="number" min="1" max="5" name="probability" value="{{ item.probability if item else 1 }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="owner" placeholder="Pilote" value="{{ item.owner if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="date" name="due_date" value="{{ item.due_date if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <select name="status" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['Ouvert','En traitement','Réduit','Clôturé'] %}
+    <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <textarea name="mitigation" placeholder="Mesures de maîtrise" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded md:col-span-2" rows="5">{{ item.mitigation if item else '' }}</textarea>
+  <div class="md:col-span-2">
+    <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded">Enregistrer</button>
+    <a class="ml-3 text-gray-400 hover:text-gray-200" href="{{ url_for('risks_list') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}

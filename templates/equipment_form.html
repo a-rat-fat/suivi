@@ -1,0 +1,19 @@
+{% extends "layout.html" %}{% block content %}
+<h1 class="text-2xl font-semibold mb-4">{{ 'Modifier' if item else 'Ajouter' }} un équipement</h1>
+<form method="post" class="grid md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-xl border border-gray-800">
+  <input name="name" placeholder="Nom" value="{{ item.name if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="asset_tag" placeholder="N° d'inventaire" value="{{ item.asset_tag if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input name="control_type" placeholder="Type de contrôle" value="{{ item.control_type if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="date" name="last_control" value="{{ item.last_control if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <input type="date" name="next_control" value="{{ item.next_control if item else '' }}" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded"/>
+  <select name="status" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded">
+    {% for s in ['OK','À faire','En retard','Hors service'] %}
+    <option value="{{s}}" {% if item and item.status==s %}selected{% endif %}>{{s}}</option>
+    {% endfor %}
+  </select>
+  <div class="md:col-span-2">
+    <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded">Enregistrer</button>
+    <a class="ml-3 text-gray-400 hover:text-gray-200" href="{{ url_for('equipment_list') }}">Annuler</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-semibold">Fiches de Données de Sécurité</h1>
+  <a class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded" href="{{ url_for('sds_new') }}">Nouvelle FDS</a>
+</div>
+<div class="overflow-x-auto rounded-xl border border-gray-800">
+<table class="min-w-full text-sm">
+  <thead class="bg-gray-900 text-gray-300">
+    <tr><th class="p-2 text-left">Produit</th><th class="p-2 text-left">Fournisseur</th><th class="p-2">Révision</th><th class="p-2">Prochaine revue</th><th class="p-2"></th></tr>
+  </thead>
+  <tbody>
+  {% for it in items %}
+  <tr class="border-t border-gray-800 hover:bg-gray-900">
+    <td class="p-2">{{ it.product_name }}</td>
+    <td class="p-2">{{ it.supplier }}</td>
+    <td class="p-2">{{ it.revision_date or '' }}</td>
+    <td class="p-2">{{ it.next_review_date or '' }}</td>
+    <td class="p-2 text-right">
+      {% if it.url %}<a class="text-blue-400 hover:underline mr-3" target="_blank" href="{{ it.url }}">Voir</a>{% endif %}
+      <a class="text-indigo-400 hover:underline mr-3" href="{{ url_for('sds_edit', item_id=it.id) }}">Modifier</a>
+      <form action="{{ url_for('sds_delete', item_id=it.id) }}" method="post" class="inline" onsubmit="return confirm('Supprimer ?')">
+        <button class="text-rose-400 hover:underline">Supprimer</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
