@@ -123,8 +123,9 @@ def init_db():
         db.session.add(User(initials="MZ", name="Marko Zovko", role="Resp. HSE"))
         db.session.commit()
 
-@app.before_first_request
-def _startup():
+
+# Initialize DB once at import (Flask 3.x safe)
+with app.app_context():
     init_db()
 
 def get_initials():
